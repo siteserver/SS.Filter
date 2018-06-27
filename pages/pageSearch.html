@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>SiteServer Filter Plugin</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="../assets/css/bootstrap-4.1.0.min.css" rel="stylesheet" type="text/css" />
+  <link href="../assets/css/icons-1.0.6.min.css" rel="stylesheet" type="text/css" />
+  <link href="../assets/css/siteserver-1.0.6.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <div id="main" class="m-t-15 m-b-15 m-l-15 m-r-15 card-box">
+
+    <ul class="nav nav-tabs tabs-bordered nav-justified">
+      <li class="nav-item">
+        <a href="javascript:;" class="nav-link active">
+          内容筛选
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="javascript:;" onclick="location.href = 'pageFields.html' + location.search" class="nav-link">
+          分类设置
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <template v-if="pageLoad">
+
+        <div v-if="pageAlert" class="alert" v-bind:class="{ 'alert-warning': pageAlert.type === 'warning', 'alert-success': pageAlert.type === 'success', 'alert-danger': pageAlert.type === 'danger' }">
+          <button v-on:click="pageAlert = null" class="close" data-dismiss="alert">×</button>
+          <span v-html="pageAlert.html"></span>
+        </div>
+
+        <table class="tablesaw m-t-20 table m-b-10 tablesaw-stack">
+          <thead>
+            <tr class="thead">
+              <th>名称</th>
+              <th>分类</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr v-for="field in fields">
+              <td class="text-nowrap" style="width: 260px">
+                {{ field.title }}（{{ displayType(field.inputType) }}）
+              </td>
+              <td class="text-wrap">
+                <a v-for="tagInfo in field.tagInfoList" href="javascript:;" v-on:click="btnTagClick(field, tagInfo)" v-bind:class="{ 'btn-outline-secondary': field.checkedTagIds.indexOf(tagInfo.id) === -1, 'btn-primary': field.checkedTagIds.indexOf(tagInfo.id) !== -1 }"
+                  class="btn m-r-5">{{ tagInfo.title }}</a>
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <template v-if="results">
+
+          <hr />
+          <h5 class="card-title">检索到 {{ count }} 条内容，共 {{ pageCount }} 页</h5>
+          
+          <table class="tablesaw m-t-20 table m-b-10 tablesaw-stack">
+            <thead>
+              <tr class="thead">
+                <th>栏目</th>
+                <th>标题</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <tr v-for="result in results">
+                <td class="text-nowrap" style="width: 260px">
+                  <a v-bind:href="result.channelUrl" target="_blank">{{ result.channel.channelName }}</a>
+                </td>
+                <td class="text-wrap">
+                  <a v-bind:href="result.contentUrl" target="_blank">{{ result.content.title }}</a>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
+          <template v-if="pageCount > 1">
+            <hr />
+
+            <div class="clearfix">
+              <ul class="pagination float-left">
+                <li class="page-item" v-bind:class="{'disabled': page <= 1}">
+                  <a v-on:click="btnFirstClick" class="page-link" href="javascript:;">首 页</a>
+                </li>
+                <li class="page-item" v-bind:class="{'disabled': page <= 1}">
+                  <a v-on:click="btnPreviousClick" class="page-link" href="javascript:;">上一页</a>
+                </li>
+                <li class="page-item" v-bind:class="{'disabled': page >= pageCount}">
+                  <a v-on:click="btnNextClick" class="page-link" href="javascript:;">下一页</a>
+                </li>
+                <li class="page-item" v-bind:class="{'disabled': page >= pageCount}">
+                  <a v-on:click="btnLastClick" class="page-link" href="javascript:;">末 页</a>
+                </li>
+              </ul>
+              <span class="btn-group dropup float-right">
+                <button v-on:click="btnPagerClick" type="button" class="btn btn-light bg-white text-secondary dropdown-toggle">
+                  第 {{ page }} 页（共 {{ pageCount }} 页）
+                </button>
+                <div id="dropdown-pager" class="dropdown-menu" style="display: none;">
+                  <a v-on:click="btnPageClick(i)" v-for="i in pageCount" class="dropdown-item" v-bind:class="{'active' : page === i}" href="javascript:;">第 {{ i }} 页</a>
+                </div>
+              </span>
+            </div>
+          </template>
+
+        </template>
+
+      </template>
+      <template v-else>
+        <div class="text-center" style="margin-top: 100px;margin-bottom: 100px">
+          <img class="mt-3" src="../assets/images/loading.gif" />
+          <p class="lead mt-3 text-nowrap">载入中，请稍后...</p>
+        </div>
+      </template>
+    </div>
+
+  </div>
+</body>
+
+</html>
+
+<script src="../assets/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="../assets/js/layer-3.1.1/layer.js" type="text/javascript"></script>
+<script src="../assets/js/vue-2.5.16.min.js" type="text/javascript"></script>
+<script src="../assets/js/axios-0.17.1.min.js" type="text/javascript"></script>
+
+<script src="pageUtils.js" type="text/javascript"></script>
+<script src="pageSearch.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(document).click(function () {
+      $('#dropdown-pager').hide();
+    });
+  });
+</script>

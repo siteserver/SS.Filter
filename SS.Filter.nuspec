@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>SS.Filter</id>
+    <version>$version$</version>
+    <title>内容筛选插件</title>
+    <authors>SiteServer CMS</authors>
+    <owners>siteserver</owners>
+    <licenseUrl>https://github.com/siteserver/SS.Filter/blob/master/LICENSE</licenseUrl>
+    <projectUrl>http://plugins.siteserver.cn/ss.filter/</projectUrl>
+    <iconUrl>https://plugins.siteserver.cn/ss.filter/logo.svg</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>SiteServer CMS 内容筛选插件</description>
+    <releaseNotes>新增插件</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>SiteServer CMS Hits Plugin</tags>
+  </metadata>
+  <files>
+    <file src="assets\fonts\**" target="Content\assets\fonts"/>
+  </files>
+</package>
