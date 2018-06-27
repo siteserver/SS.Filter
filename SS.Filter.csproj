@@ -73,6 +73,14 @@
     <Compile Include="Provider\FieldDao.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\fonts\fontawesome-webfont.eot" />
+    <None Include="assets\fonts\fontawesome-webfont.ttf" />
+    <None Include="assets\fonts\fontawesome-webfont.woff" />
+    <None Include="assets\fonts\fontawesome-webfont.woff2" />
+    <None Include="assets\fonts\FontAwesome.otf" />
+    <None Include="assets\fonts\ionicons.eot" />
+    <None Include="assets\fonts\ionicons.ttf" />
+    <None Include="assets\fonts\ionicons.woff" />
     <None Include="docs\background.md" />
     <None Include="docs\captcha.md" />
     <None Include="docs\foreground.md" />
@@ -86,6 +94,26 @@
     <None Include="SS.Filter.nuspec" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\css\bootstrap-4.1.0.min.css" />
+    <Content Include="assets\css\icons-1.0.6.min.css" />
+    <Content Include="assets\css\siteserver-1.0.6.min.css" />
+    <Content Include="assets\fonts\fontawesome-webfont.svg" />
+    <Content Include="assets\fonts\ionicons.svg" />
+    <Content Include="assets\images\loading.gif" />
+    <Content Include="assets\js\axios-0.17.1.min.js" />
+    <Content Include="assets\js\jquery-1.9.1.min.js" />
+    <Content Include="assets\js\layer-3.1.1\layer.js" />
+    <Content Include="assets\js\layer-3.1.1\mobile\layer.js" />
+    <Content Include="assets\js\layer-3.1.1\mobile\need\layer.css" />
+    <Content Include="assets\js\layer-3.1.1\theme\default\icon-ext.png" />
+    <Content Include="assets\js\layer-3.1.1\theme\default\icon.png" />
+    <Content Include="assets\js\layer-3.1.1\theme\default\layer.css" />
+    <Content Include="assets\js\layer-3.1.1\theme\default\loading-0.gif" />
+    <Content Include="assets\js\layer-3.1.1\theme\default\loading-1.gif" />
+    <Content Include="assets\js\layer-3.1.1\theme\default\loading-2.gif" />
+    <Content Include="assets\js\sweetalert-2.1.0.min.js" />
+    <Content Include="assets\js\vue-2.5.16.min.js" />
+    <Content Include="assets\js\vue-input-tag-1.0.4.min.js" />
     <Content Include="docs\assets\background\01.png" />
     <Content Include="docs\assets\background\02.png" />
     <Content Include="docs\assets\background\03.png" />
@@ -97,8 +125,17 @@
     <Content Include="docs\assets\readme\03.png" />
     <Content Include="docs\index.html" />
     <Content Include="docs\logo.svg" />
-    <Content Include="logo.svg" />
     <Content Include="pageSettings.aspx" />
+    <Content Include="pages\apiUtils.js" />
+    <Content Include="pages\pageCheck.html" />
+    <Content Include="pages\pageCheck.js" />
+    <Content Include="pages\pageFields.html" />
+    <Content Include="pages\pageFields.js" />
+    <Content Include="pages\pageSearch.html" />
+    <Content Include="pages\pageSearch.js" />
+    <Content Include="pages\pageUtils.js" />
+    <Content Include="pages\settings.html" />
+    <Content Include="pages\settings.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
