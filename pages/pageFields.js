@@ -136,7 +136,7 @@ var $methods = {
   },
   btnEditClick: function (item) {
     this.pageType = 'add';
-    pageAlertthis.pageAlert = null;
+    this.pageAlert = null;
     this.item = item;
   },
   btnSubmitClick: function () {
