@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using SiteServer.Plugin;
-using SS.Filter.Core;
 using SS.Filter.Model;
 
 namespace SS.Filter.Controllers
@@ -12,10 +10,10 @@ namespace SS.Filter.Controllers
     {
         public const string Name = "values";
 
-        public class ChannelContent
+        private class ChannelContent
         {
             public IChannelInfo Channel { get; set; }
-            public IContentInfo Content { get; set; }
+            public Dictionary<string, object> Content { get; set; }
             public string ChannelUrl { get; set; }
             public string ContentUrl { get; set; }
         }
@@ -43,11 +41,25 @@ namespace SS.Filter.Controllers
             {
                 var pageTupleList = tupleList.Skip(skip).Take(top).ToList();
 
+                var siteUrl = Main.Instance.FilesApi.GetSiteUrl(siteId);
+
                 foreach (var tuple in pageTupleList)
                 {
                     var channelInfo = Main.Instance.ChannelApi.GetChannelInfo(siteId, tuple.Item1);
                     var contentInfo = Main.Instance.ContentApi.GetContentInfo(siteId, tuple.Item1, tuple.Item2);
+
                     if (channelInfo == null || contentInfo == null) continue;
+
+                    var content = contentInfo.ToDictionary();
+                    if (content.ContainsKey("imageUrl"))
+                    {
+                        var imageUrl = (string) content["imageUrl"];
+                        if (!string.IsNullOrEmpty(imageUrl))
+                        {
+                            imageUrl = imageUrl.Replace("@/", siteUrl);
+                            content["imageUrl"] = imageUrl;
+                        }
+                    }
 
                     var channelUrl = Main.Instance.FilesApi.GetChannelUrl(siteId, tuple.Item1);
                     var contentUrl = Main.Instance.FilesApi.GetContentUrl(siteId, tuple.Item1, tuple.Item2);
@@ -55,7 +67,7 @@ namespace SS.Filter.Controllers
                     list.Add(new ChannelContent
                     {
                         Channel = channelInfo,
-                        Content = contentInfo,
+                        Content = content,
                         ChannelUrl = channelUrl,
                         ContentUrl = contentUrl
                     });
