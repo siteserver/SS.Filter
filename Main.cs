@@ -52,6 +52,11 @@ namespace SS.Filter
                         {
                             Text = "分类设置",
                             Href = "pages/pageFields.html"
+                        },
+                        new Menu
+                        {
+                            Text = "前台页面标签",
+                            Href = "pages/pageStyle.html"
                         }
                     }
                 })

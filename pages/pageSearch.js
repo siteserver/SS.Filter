@@ -1,7 +1,4 @@
-﻿var $apiUrl = decodeURIComponent(new RegExp('[?&]apiUrl=([^&#]*)', 'i').exec(window.location.href)[1]) + '/plugins/ss.filter/';
-var $siteId = parseInt(decodeURIComponent(new RegExp('[?&]siteId=([^&#]*)', 'i').exec(window.location.href)[1]));
-
-var $api = axios.create({
+﻿var $api = axios.create({
   baseURL: $apiUrl,
   params: {
     siteId: $siteId
@@ -103,9 +100,9 @@ var $methods = {
     $('#dropdown-pager').toggle();
   },
   displayType: function (inputType) {
-    if (inputType === 'SelectOne') return '单选项'
-    else if (inputType === 'SelectMultiple') return '多选项'
-    else if (inputType === 'SelectCascading') return '级联选项'
+    if (inputType === 'SelectOne') return '单选项';
+    else if (inputType === 'SelectMultiple') return '多选项';
+    else if (inputType === 'SelectCascading') return '级联选项';
     return '';
   },
   displayTags: function (field) {

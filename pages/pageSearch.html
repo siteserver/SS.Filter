@@ -25,6 +25,11 @@
           分类设置
         </a>
       </li>
+      <li class="nav-item">
+        <a href="javascript:;" onclick="location.href = 'pageStyle.html' + location.search" class="nav-link">
+          前台页面标签
+        </a>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -134,6 +139,10 @@
 <script src="../assets/js/axios-0.17.1.min.js" type="text/javascript"></script>
 
 <script src="pageUtils.js" type="text/javascript"></script>
+<script>
+  var $apiUrl = decodeURIComponent(new RegExp('[?&]apiUrl=([^&#]*)', 'i').exec(window.location.href)[1]) + '/plugins/ss.filter/';
+  var $siteId = parseInt(decodeURIComponent(new RegExp('[?&]siteId=([^&#]*)', 'i').exec(window.location.href)[1]));
+</script>
 <script src="pageSearch.js" type="text/javascript"></script>
 <script type="text/javascript">
   $(document).ready(function () {
