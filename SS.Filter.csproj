@@ -133,6 +133,7 @@
     <Content Include="pages\pageFields.js" />
     <Content Include="pages\pageSearch.html" />
     <Content Include="pages\pageSearch.js" />
+    <Content Include="pages\pageStyle.html" />
     <Content Include="pages\pageUtils.js" />
     <Content Include="pages\settings.html" />
     <Content Include="pages\settings.js" />
