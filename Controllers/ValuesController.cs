@@ -56,7 +56,7 @@ namespace SS.Filter.Controllers
                         var imageUrl = (string) content["imageUrl"];
                         if (!string.IsNullOrEmpty(imageUrl))
                         {
-                            imageUrl = imageUrl.Replace("@/", siteUrl);
+                            imageUrl = imageUrl.Replace("@/", siteUrl + "/");
                             content["imageUrl"] = imageUrl;
                         }
                     }
