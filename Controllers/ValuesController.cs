@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SiteServer.Plugin;
+using SS.Filter.Core;
 using SS.Filter.Model;
 
 namespace SS.Filter.Controllers
@@ -81,7 +82,7 @@ namespace SS.Filter.Controllers
             };
         }
 
-        public static bool Update(IRequest request, int fieldId)
+        public static bool Update(IRequest request, string fieldIdStr)
         {
             if (!request.IsAdminLoggin)
             {
@@ -107,6 +108,8 @@ namespace SS.Filter.Controllers
             var isMultiple = request.GetPostBool("isMultiple");
             var isAdd = request.GetPostBool("isAdd");
             var tagId = request.GetPostInt("tagId");
+
+            var fieldId = Utils.ToInt(fieldIdStr);
 
             if (isMultiple)
             {

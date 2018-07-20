@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SiteServer.Plugin;
+using SS.Filter.Core;
 using SS.Filter.Model;
 
 namespace SS.Filter.Controllers
@@ -10,7 +11,7 @@ namespace SS.Filter.Controllers
     {
         public const string Name = "tags";
 
-        public static TagInfo Get(IRequest request, int tagId)
+        public static TagInfo Get(IRequest request, string tagId)
         {
             var fieldId = request.GetQueryInt("fieldId");
             if (fieldId == 0)
@@ -18,7 +19,7 @@ namespace SS.Filter.Controllers
                 throw new Exception("参数不正确：fieldId");
             }
 
-            var tagInfo = Main.Instance.TagDao.GetTagInfo(tagId);
+            var tagInfo = Main.Instance.TagDao.GetTagInfo(Utils.ToInt(tagId));
             if (tagInfo != null)
             {
                 tagInfo.TagInfoList = Main.Instance.TagDao.GetTagInfoList(fieldId, tagInfo.Id);
@@ -28,7 +29,7 @@ namespace SS.Filter.Controllers
             return tagInfo;
         }
 
-        public static TagInfo Update(IRequest request, int tagId)
+        public static TagInfo Update(IRequest request, string tagId)
         {
             if (!request.IsAdminLoggin)
             {
@@ -45,7 +46,7 @@ namespace SS.Filter.Controllers
             var fieldId = tagInfoToUpdate.FieldId;
             var parentId = tagInfoToUpdate.Id;
 
-            tagInfoToUpdate.Id = tagId;
+            tagInfoToUpdate.Id = Utils.ToInt(tagId);
             Main.Instance.TagDao.Update(tagInfoToUpdate.FieldId, tagInfoToUpdate.ParentId, tagInfoToUpdate);
 
             var tagInfoList = Main.Instance.TagDao.GetTagInfoList(fieldId, parentId);

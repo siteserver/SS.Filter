@@ -142,7 +142,7 @@ namespace SS.Filter.Controllers
             return fieldInfo;
         }
 
-        public static bool Delete(IRequest request, int fieldId)
+        public static bool Delete(IRequest request, string fieldId)
         {
             var siteId = request.GetQueryInt("siteId");
             if (siteId == 0)
@@ -155,7 +155,7 @@ namespace SS.Filter.Controllers
                 throw new Exception("未授权请求");
             }
 
-            return Main.Instance.FieldDao.Delete(siteId, fieldId);
+            return Main.Instance.FieldDao.Delete(siteId, Utils.ToInt(fieldId));
         }
     }
 }

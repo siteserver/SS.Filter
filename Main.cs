@@ -109,7 +109,7 @@ namespace SS.Filter
             {
                 return FieldsController.List(args.Request);
             }
-            if (Utils.EqualsIgnoreCase(args.RouteResource, TagsController.Name) && args.RouteId > 0)
+            if (Utils.EqualsIgnoreCase(args.RouteResource, TagsController.Name) && !string.IsNullOrEmpty(args.RouteId))
             {
                 return TagsController.Get(args.Request, args.RouteId);
             }
@@ -137,11 +137,11 @@ namespace SS.Filter
             {
                 return FieldsController.Update(args.Request);
             }
-            if (Utils.EqualsIgnoreCase(args.RouteResource, TagsController.Name) && args.RouteId > 0)
+            if (Utils.EqualsIgnoreCase(args.RouteResource, TagsController.Name) && !string.IsNullOrEmpty(args.RouteId))
             {
                 return TagsController.Update(args.Request, args.RouteId);
             }
-            if (Utils.EqualsIgnoreCase(args.RouteResource, ValuesController.Name) && args.RouteId > 0)
+            if (Utils.EqualsIgnoreCase(args.RouteResource, ValuesController.Name) && !string.IsNullOrEmpty(args.RouteId))
             {
                 return ValuesController.Update(args.Request, args.RouteId);
             }
@@ -151,7 +151,7 @@ namespace SS.Filter
 
         private object Service_ApiDelete(object sender, ApiEventArgs args)
         {
-            if (Utils.EqualsIgnoreCase(args.RouteResource, FieldsController.Name) && args.RouteId > 0)
+            if (Utils.EqualsIgnoreCase(args.RouteResource, FieldsController.Name) && !string.IsNullOrEmpty(args.RouteId))
             {
                 return FieldsController.Delete(args.Request, args.RouteId);
             }
