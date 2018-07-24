@@ -32,9 +32,9 @@ namespace SS.Filter
         {
             Instance = this;
 
-            FieldDao = new FieldDao(ConnectionString, DataApi);
-            TagDao = new TagDao(ConnectionString, DataApi);
-            ValueDao = new ValueDao(ConnectionString, DataApi);
+            FieldDao = new FieldDao(ConnectionString, DatabaseApi);
+            TagDao = new TagDao(ConnectionString, DatabaseApi);
+            ValueDao = new ValueDao(ConnectionString, DatabaseApi);
 
             service
                 .AddSiteMenu(siteId => new Menu

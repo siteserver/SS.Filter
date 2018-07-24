@@ -43,12 +43,12 @@ namespace SS.Filter.Provider
         };
 
         private readonly string _connectionString;
-        private readonly IDataApi _helper;
+        private readonly IDatabaseApi _helper;
         private readonly ObjectCache _cache = MemoryCache.Default;
         private readonly CacheItemPolicy _policy = new CacheItemPolicy();
         private const string CacheNameTagInfoList = nameof(CacheNameTagInfoList);
 
-        public TagDao(string connectionString, IDataApi helper)
+        public TagDao(string connectionString, IDatabaseApi helper)
         {
             _connectionString = connectionString;
             _helper = helper;

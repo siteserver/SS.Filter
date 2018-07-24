@@ -42,7 +42,7 @@ namespace SS.Filter.Controllers
             {
                 var pageTupleList = tupleList.Skip(skip).Take(top).ToList();
 
-                var siteUrl = Main.Instance.FilesApi.GetSiteUrl(siteId);
+                var siteUrl = Main.Instance.SiteApi.GetSiteUrl(siteId);
 
                 foreach (var tuple in pageTupleList)
                 {
@@ -62,8 +62,8 @@ namespace SS.Filter.Controllers
                         }
                     }
 
-                    var channelUrl = Main.Instance.FilesApi.GetChannelUrl(siteId, tuple.Item1);
-                    var contentUrl = Main.Instance.FilesApi.GetContentUrl(siteId, tuple.Item1, tuple.Item2);
+                    var channelUrl = Main.Instance.ChannelApi.GetChannelUrl(siteId, tuple.Item1);
+                    var contentUrl = Main.Instance.ContentApi.GetContentUrl(siteId, tuple.Item1, tuple.Item2);
 
                     list.Add(new ChannelContent
                     {

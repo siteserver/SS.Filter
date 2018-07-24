@@ -44,13 +44,13 @@ namespace SS.Filter.Provider
         };
 
         private readonly string _connectionString;
-        private readonly IDataApi _helper;
+        private readonly IDatabaseApi _helper;
 
         private readonly ObjectCache _cache = MemoryCache.Default;
         private readonly CacheItemPolicy _policy = new CacheItemPolicy();
         private const string CacheNameFieldInfoList = nameof(CacheNameFieldInfoList);
 
-        public FieldDao(string connectionString, IDataApi helper)
+        public FieldDao(string connectionString, IDatabaseApi helper)
         {
             _connectionString = connectionString;
             _helper = helper;
