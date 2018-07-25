@@ -56,8 +56,6 @@ var $methods = {
         $this.count = response.data.count;
         $this.page = page;
         $this.pageCount = Math.ceil($this.count / $this.top);
-
-        //console.log('count:' + $this.count + ',page:' + $this.page + ',pageCount:' + $this.pageCount);
       })
       .catch($this.pageError);
   },
@@ -76,23 +74,23 @@ var $methods = {
     }
     this.getValues(1);
   },
-  btnFirstClick: function() {
+  btnFirstClick: function () {
     if (this.page <= 1) return;
     this.getValues(1);
   },
-  btnPreviousClick: function() {
+  btnPreviousClick: function () {
     if (this.page <= 1) return;
     this.getValues(this.page - 1);
   },
-  btnNextClick: function() {
+  btnNextClick: function () {
     if (this.page >= this.pageCount) return;
     this.getValues(this.page + 1);
   },
-  btnLastClick: function() {
+  btnLastClick: function () {
     if (this.page >= this.pageCount) return;
     this.getValues(this.pageCount);
   },
-  btnPageClick: function(page) {
+  btnPageClick: function (page) {
     this.getValues(page);
   },
   btnPagerClick: function () {

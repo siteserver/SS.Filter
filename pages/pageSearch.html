@@ -55,7 +55,7 @@
               </td>
               <td class="text-wrap">
                 <a v-for="tagInfo in field.tagInfoList" href="javascript:;" v-on:click="btnTagClick(field, tagInfo)" v-bind:class="{ 'btn-outline-secondary': field.checkedTagIds.indexOf(tagInfo.id) === -1, 'btn-primary': field.checkedTagIds.indexOf(tagInfo.id) !== -1 }"
-                  class="btn m-r-5">{{ tagInfo.title }}</a>
+                  class="btn m-b-5 m-r-5">{{ tagInfo.title }}</a>
               </td>
             </tr>
 
