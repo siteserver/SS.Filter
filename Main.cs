@@ -71,10 +71,10 @@ namespace SS.Filter
                 .AddContentColumn("筛选项", GetFilterColumnHtml)
                 ;
 
-            service.ApiGet += Service_ApiGet;
-            service.ApiPost += Service_ApiPost;
-            service.ApiPut += Service_ApiPut;
-            service.ApiDelete += Service_ApiDelete;
+            service.RestApiGet += Service_RestApiGet;
+            service.RestApiPost += Service_RestApiPost;
+            service.RestApiPut += Service_RestApiPut;
+            service.RestApiDelete += Service_RestApiDelete;
         }
 
         private string GetFilterColumnHtml(IContentContext contentContext)
@@ -103,7 +103,7 @@ namespace SS.Filter
             return builder.ToString();
         }
 
-        private object Service_ApiGet(object sender, ApiEventArgs args)
+        private object Service_RestApiGet(object sender, RestApiEventArgs args)
         {
             if (Utils.EqualsIgnoreCase(args.RouteResource, FieldsController.Name))
             {
@@ -117,7 +117,7 @@ namespace SS.Filter
             throw new Exception("请求的资源不在服务器上");
         }
 
-        private object Service_ApiPost(object sender, ApiEventArgs args)
+        private object Service_RestApiPost(object sender, RestApiEventArgs args)
         {
             if (Utils.EqualsIgnoreCase(args.RouteResource, FieldsController.Name))
             {
@@ -131,7 +131,7 @@ namespace SS.Filter
             throw new Exception("请求的资源不在服务器上");
         }
 
-        private object Service_ApiPut(object sender, ApiEventArgs args)
+        private object Service_RestApiPut(object sender, RestApiEventArgs args)
         {
             if (Utils.EqualsIgnoreCase(args.RouteResource, FieldsController.Name))
             {
@@ -149,7 +149,7 @@ namespace SS.Filter
             throw new Exception("请求的资源不在服务器上");
         }
 
-        private object Service_ApiDelete(object sender, ApiEventArgs args)
+        private object Service_RestApiDelete(object sender, RestApiEventArgs args)
         {
             if (Utils.EqualsIgnoreCase(args.RouteResource, FieldsController.Name) && !string.IsNullOrEmpty(args.RouteId))
             {
