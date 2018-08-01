@@ -1,10 +1,14 @@
-﻿var $api = axios.create({
+﻿var $axiosParams = {
   baseURL: $apiUrl,
   params: {
     siteId: $siteId
   },
   withCredentials: true
-});
+};
+if ($channelId) {
+  $axiosParams.params.channelId = $channelId;
+}
+var $api = axios.create($axiosParams);
 
 var $data = {
   pageLoad: false,
