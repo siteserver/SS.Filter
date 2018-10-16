@@ -19,10 +19,10 @@ namespace SS.Filter.Controllers
                 throw new Exception("参数不正确：fieldId");
             }
 
-            var tagInfo = Main.Instance.TagDao.GetTagInfo(Utils.ToInt(tagId));
+            var tagInfo = Main.TagDao.GetTagInfo(Utils.ToInt(tagId));
             if (tagInfo != null)
             {
-                tagInfo.TagInfoList = Main.Instance.TagDao.GetTagInfoList(fieldId, tagInfo.Id);
+                tagInfo.TagInfoList = Main.TagDao.GetTagInfoList(fieldId, tagInfo.Id);
                 tagInfo.Tags = tagInfo.TagInfoList.Select(x => x.Title).ToList();
             }
 
@@ -47,9 +47,9 @@ namespace SS.Filter.Controllers
             var parentId = tagInfoToUpdate.Id;
 
             tagInfoToUpdate.Id = Utils.ToInt(tagId);
-            Main.Instance.TagDao.Update(tagInfoToUpdate.FieldId, tagInfoToUpdate.ParentId, tagInfoToUpdate);
+            Main.TagDao.Update(tagInfoToUpdate.FieldId, tagInfoToUpdate.ParentId, tagInfoToUpdate);
 
-            var tagInfoList = Main.Instance.TagDao.GetTagInfoList(fieldId, parentId);
+            var tagInfoList = Main.TagDao.GetTagInfoList(fieldId, parentId);
             if (tagInfoToUpdate.Tags == null)
             {
                 tagInfoToUpdate.Tags = new List<string>();
@@ -66,7 +66,7 @@ namespace SS.Filter.Controllers
 
             if (tagInfoListToDelete.Count > 0)
             {
-                Main.Instance.TagDao.Delete(fieldId, parentId, tagInfoListToDelete);
+                Main.TagDao.Delete(fieldId, parentId, tagInfoListToDelete);
             }
 
             var taxis = 1;
@@ -75,7 +75,7 @@ namespace SS.Filter.Controllers
                 var tagInfo = tagInfoList.Find(t => t.Title == tag);
                 if (tagInfo == null)
                 {
-                    Main.Instance.TagDao.Insert(fieldId, parentId, new TagInfo
+                    Main.TagDao.Insert(fieldId, parentId, new TagInfo
                     {
                         Id = 0,
                         FieldId = fieldId,
@@ -87,7 +87,7 @@ namespace SS.Filter.Controllers
                 else
                 {
                     tagInfo.Taxis = taxis;
-                    Main.Instance.TagDao.Update(fieldId, parentId, tagInfo);
+                    Main.TagDao.Update(fieldId, parentId, tagInfo);
                 }
 
                 taxis++;

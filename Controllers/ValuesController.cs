@@ -34,7 +34,7 @@ namespace SS.Filter.Controllers
 
             var fieldInfoList = request.GetPostObject<List<FieldInfo>>();
 
-            var tupleList = Main.Instance.ValueDao.GetChannelIdContentIdTupleList(siteId, channelId, fieldInfoList);
+            var tupleList = Main.ValueDao.GetChannelIdContentIdTupleList(siteId, channelId, fieldInfoList);
 
             var list = new List<ChannelContent>();
 
@@ -42,12 +42,12 @@ namespace SS.Filter.Controllers
             {
                 var pageTupleList = tupleList.Skip(skip).Take(top).ToList();
 
-                var siteUrl = Main.Instance.SiteApi.GetSiteUrl(siteId);
+                var siteUrl = PluginContext.SiteApi.GetSiteUrl(siteId);
 
                 foreach (var tuple in pageTupleList)
                 {
-                    var channelInfo = Main.Instance.ChannelApi.GetChannelInfo(siteId, tuple.Item1);
-                    var contentInfo = Main.Instance.ContentApi.GetContentInfo(siteId, tuple.Item1, tuple.Item2);
+                    var channelInfo = PluginContext.ChannelApi.GetChannelInfo(siteId, tuple.Item1);
+                    var contentInfo = PluginContext.ContentApi.GetContentInfo(siteId, tuple.Item1, tuple.Item2);
 
                     if (channelInfo == null || contentInfo == null) continue;
 
@@ -62,8 +62,8 @@ namespace SS.Filter.Controllers
                         }
                     }
 
-                    var channelUrl = Main.Instance.ChannelApi.GetChannelUrl(siteId, tuple.Item1);
-                    var contentUrl = Main.Instance.ContentApi.GetContentUrl(siteId, tuple.Item1, tuple.Item2);
+                    var channelUrl = PluginContext.ChannelApi.GetChannelUrl(siteId, tuple.Item1);
+                    var contentUrl = PluginContext.ContentApi.GetContentUrl(siteId, tuple.Item1, tuple.Item2);
 
                     list.Add(new ChannelContent
                     {
@@ -115,20 +115,20 @@ namespace SS.Filter.Controllers
             {
                 if (isAdd)
                 {
-                    Main.Instance.ValueDao.Insert(siteId, channelId, contentId, fieldId, tagId);
+                    Main.ValueDao.Insert(siteId, channelId, contentId, fieldId, tagId);
                 }
                 else
                 {
-                    Main.Instance.ValueDao.Delete(siteId, channelId, contentId, fieldId, tagId);
+                    Main.ValueDao.Delete(siteId, channelId, contentId, fieldId, tagId);
                 }
             }
             else
             {
-                Main.Instance.ValueDao.DeleteAll(siteId, channelId, contentId, fieldId);
+                Main.ValueDao.DeleteAll(siteId, channelId, contentId, fieldId);
 
                 if (isAdd)
                 {
-                    Main.Instance.ValueDao.Insert(siteId, channelId, contentId, fieldId, tagId);
+                    Main.ValueDao.Insert(siteId, channelId, contentId, fieldId, tagId);
                 }
             }
 

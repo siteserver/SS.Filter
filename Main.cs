@@ -11,30 +11,35 @@ namespace SS.Filter
 {
     public class Main : PluginBase
     {
+        private static string PluginId { get; set; }
         private static readonly Dictionary<int, ConfigInfo> ConfigInfoDict = new Dictionary<int, ConfigInfo>();
 
-        public ConfigInfo GetConfigInfo(int siteId)
+        public static ConfigInfo GetConfigInfo(int siteId)
         {
             if (!ConfigInfoDict.ContainsKey(siteId))
             {
-                ConfigInfoDict[siteId] = ConfigApi.GetConfig<ConfigInfo>(siteId) ?? new ConfigInfo();
+                ConfigInfoDict[siteId] = PluginContext.ConfigApi.GetConfig<ConfigInfo>(PluginId, siteId) ?? new ConfigInfo();
             }
             return ConfigInfoDict[siteId];
         }
 
-        public static Main Instance { get; private set; }
+        public static FieldDao FieldDao { get; }
+        public static TagDao TagDao { get; }
+        public static ValueDao ValueDao { get; }
 
-        public FieldDao FieldDao { get; private set; }
-        public TagDao TagDao { get; private set; }
-        public ValueDao ValueDao { get; private set; }
+        static Main()
+        {
+            var connectionString = PluginContext.ConnectionString;
+            var databaseApi = PluginContext.DatabaseApi;
+
+            FieldDao = new FieldDao(connectionString, databaseApi);
+            TagDao = new TagDao(connectionString, databaseApi);
+            ValueDao = new ValueDao(connectionString, databaseApi);
+        }
 
         public override void Startup(IService service)
         {
-            Instance = this;
-
-            FieldDao = new FieldDao(ConnectionString, DatabaseApi);
-            TagDao = new TagDao(ConnectionString, DatabaseApi);
-            ValueDao = new ValueDao(ConnectionString, DatabaseApi);
+            PluginId = Id;
 
             service
                 .AddSiteMenu(siteId => new Menu
@@ -81,13 +86,13 @@ namespace SS.Filter
         {
             var builder = new StringBuilder();
 
-            var fieldInfoList = Instance.FieldDao.GetFieldInfoList(contentContext.SiteId);
+            var fieldInfoList = FieldDao.GetFieldInfoList(contentContext.SiteId);
             foreach (var fieldInfo in fieldInfoList)
             {
-                fieldInfo.TagInfoList = Instance.TagDao.GetTagInfoList(fieldInfo.Id, 0);
+                fieldInfo.TagInfoList = TagDao.GetTagInfoList(fieldInfo.Id, 0);
                 if (fieldInfo.TagInfoList == null || fieldInfo.TagInfoList.Count == 0) continue;
 
-                fieldInfo.CheckedTagIds = Instance.ValueDao.GetTagIdList(contentContext.SiteId, contentContext.ChannelId, contentContext.ContentId, fieldInfo.Id);
+                fieldInfo.CheckedTagIds = ValueDao.GetTagIdList(contentContext.SiteId, contentContext.ChannelId, contentContext.ContentId, fieldInfo.Id);
 
                 if (fieldInfo.CheckedTagIds == null || fieldInfo.CheckedTagIds.Count == 0) continue;
 
