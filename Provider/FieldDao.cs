@@ -8,7 +8,7 @@ using SS.Filter.Model;
 
 namespace SS.Filter.Provider
 {
-    public class FieldDao
+    public static class FieldDao
     {
         public const string TableName = "ss_filter_field";
 
@@ -43,76 +43,67 @@ namespace SS.Filter.Provider
             }
         };
 
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        private readonly ObjectCache _cache = MemoryCache.Default;
-        private readonly CacheItemPolicy _policy = new CacheItemPolicy();
+        private static readonly ObjectCache Cache = MemoryCache.Default;
+        public static readonly CacheItemPolicy Policy = new CacheItemPolicy();
         private const string CacheNameFieldInfoList = nameof(CacheNameFieldInfoList);
 
-        public FieldDao(string connectionString, IDatabaseApi helper)
+        private static List<FieldInfo> CacheGetFieldInfoList(int siteId)
         {
-            _connectionString = connectionString;
-            _helper = helper;
+            return Cache[CacheNameFieldInfoList + siteId] as List<FieldInfo>;
         }
 
-        private List<FieldInfo> CacheGetFieldInfoList(int siteId)
+        private static void CacheSetFieldInfoList(int siteId, List<FieldInfo> list)
         {
-            return _cache[CacheNameFieldInfoList + siteId] as List<FieldInfo>;
+            Cache.Set(CacheNameFieldInfoList + siteId, list, Policy);
         }
 
-        private void CacheSetFieldInfoList(int siteId, List<FieldInfo> list)
+        private static void CacheRemoveFieldInfoList(int siteId)
         {
-            _cache.Set(CacheNameFieldInfoList + siteId, list, _policy);
+            Cache.Remove(CacheNameFieldInfoList + siteId);
         }
 
-        private void CacheRemoveFieldInfoList(int siteId)
-        {
-            _cache.Remove(CacheNameFieldInfoList + siteId);
-        }
-
-        public void Insert(int siteId, FieldInfo fieldInfo)
+        public static void Insert(int siteId, FieldInfo fieldInfo)
         {
             if (fieldInfo == null) return;
             fieldInfo.SiteId = siteId;
             CacheRemoveFieldInfoList(siteId);
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 fieldInfo.Id = (int)connection.Insert(fieldInfo);
             }
         }
 
-        public void Update(int siteId, FieldInfo fieldInfo)
+        public static void Update(int siteId, FieldInfo fieldInfo)
         {
             if (fieldInfo == null) return;
             fieldInfo.SiteId = siteId;
             CacheRemoveFieldInfoList(siteId);
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 connection.Update(fieldInfo);
             }
         }
 
-        public bool Delete(int siteId, int fieldId)
+        public static bool Delete(int siteId, int fieldId)
         {
             CacheRemoveFieldInfoList(siteId);
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 return connection.Delete(new FieldInfo() { Id = fieldId });
             }
         }
 
-        public List<FieldInfo> GetFieldInfoList(int siteId)
+        public static List<FieldInfo> GetFieldInfoList(int siteId)
         {
             List<FieldInfo> list = CacheGetFieldInfoList(siteId);
             if (list != null) return list;
 
             var sqlString = $"SELECT * FROM {TableName} WHERE {nameof(FieldInfo.SiteId)} = @{nameof(FieldInfo.SiteId)} ORDER BY {nameof(FieldInfo.Taxis)}, {nameof(FieldInfo.Id)}";
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 list = connection.Query<FieldInfo>(sqlString, new FieldInfo
                 {
@@ -125,11 +116,11 @@ namespace SS.Filter.Provider
             return list;
         }
 
-        public FieldInfo GetFieldInfo(int id)
+        public static FieldInfo GetFieldInfo(int id)
         {
             var sqlString = $"SELECT * FROM {TableName} WHERE {nameof(FieldInfo.Id)} = @{nameof(FieldInfo.Id)}";
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 return connection.QuerySingleOrDefault<FieldInfo>(sqlString, new FieldInfo {Id = id});
             }

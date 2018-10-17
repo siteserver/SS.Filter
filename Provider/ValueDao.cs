@@ -9,7 +9,7 @@ using SS.Filter.Model;
 
 namespace SS.Filter.Provider
 {
-    public class ValueDao
+    public static class ValueDao
     {
         public const string TableName = "ss_filter_value";
 
@@ -47,22 +47,13 @@ namespace SS.Filter.Provider
             }
         };
 
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-
-        public ValueDao(string connectionString, IDatabaseApi helper)
-        {
-            _connectionString = connectionString;
-            _helper = helper;
-        }
-
-        public List<int> GetTagIdList(int siteId, int channelId, int contentId, int fieldId)
+        public static List<int> GetTagIdList(int siteId, int channelId, int contentId, int fieldId)
         {
             if (channelId == 0 || contentId == 0) return new List<int>();
 
             var sqlString = $"SELECT {nameof(ValueInfo.TagId)} FROM {TableName} WHERE {nameof(ValueInfo.SiteId)} = @{nameof(ValueInfo.SiteId)} AND {nameof(ValueInfo.ChannelId)} = @{nameof(ValueInfo.ChannelId)} AND {nameof(ValueInfo.ContentId)} = @{nameof(ValueInfo.ContentId)} AND {nameof(ValueInfo.FieldId)} = @{nameof(ValueInfo.FieldId)}";
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 return connection.Query<int>(sqlString, new ValueInfo
                 {
@@ -74,7 +65,7 @@ namespace SS.Filter.Provider
             }
         }
 
-        public List<Tuple<int, int>> GetChannelIdContentIdTupleList(int siteId, int channelId, List<FieldInfo> fieldInfoList)
+        public static List<Tuple<int, int>> GetChannelIdContentIdTupleList(int siteId, int channelId, List<FieldInfo> fieldInfoList)
         {
             if (fieldInfoList == null || fieldInfoList.Count == 0) return new List<Tuple<int, int>>();
 
@@ -134,11 +125,11 @@ namespace SS.Filter.Provider
                 }
             }
 
-            using (var rdr = _helper.ExecuteReader(_connectionString, sqlString))
+            using (var rdr = Context.DatabaseApi.ExecuteReader(Context.ConnectionString, sqlString))
             {
                 while (rdr.Read())
                 {
-                    list.Add(new Tuple<int, int>(_helper.GetInt(rdr, 0), _helper.GetInt(rdr, 1)));
+                    list.Add(new Tuple<int, int>(Context.DatabaseApi.GetInt(rdr, 0), Context.DatabaseApi.GetInt(rdr, 1)));
                 }
                 rdr.Close();
             }
@@ -146,7 +137,7 @@ namespace SS.Filter.Provider
             return list;
         }
 
-        public void Insert(int siteId, int channelId, int contentId, int fieldId, int tagId)
+        public static void Insert(int siteId, int channelId, int contentId, int fieldId, int tagId)
         {
             var valueInfo = new ValueInfo
             {
@@ -156,15 +147,15 @@ namespace SS.Filter.Provider
                 FieldId = fieldId,
                 TagId = tagId
             };
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 valueInfo.Id = (int)connection.Insert(valueInfo);
             }
         }
 
-        public bool Delete(int id)
+        public static bool Delete(int id)
         {
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 return connection.Delete(new ValueInfo
                 {
@@ -173,18 +164,18 @@ namespace SS.Filter.Provider
             }
         }
 
-        public void DeleteAll(int siteId, int channelId, int contentId, int fieldId)
+        public static void DeleteAll(int siteId, int channelId, int contentId, int fieldId)
         {
             var sqlString = $"DELETE FROM {TableName} WHERE {nameof(ValueInfo.SiteId)} = {siteId} AND {nameof(ValueInfo.ChannelId)} = {channelId} AND {nameof(ValueInfo.ContentId)} = {contentId} AND {nameof(ValueInfo.FieldId)} = {fieldId}";
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
 
-        public void Delete(int siteId, int channelId, int contentId, int fieldId, int tagId)
+        public static void Delete(int siteId, int channelId, int contentId, int fieldId, int tagId)
         {
             var sqlString = $"DELETE FROM {TableName} WHERE {nameof(ValueInfo.SiteId)} = {siteId} AND {nameof(ValueInfo.ChannelId)} = {channelId} AND {nameof(ValueInfo.ContentId)} = {contentId} AND {nameof(ValueInfo.FieldId)} = {fieldId} AND {nameof(ValueInfo.TagId)} = {tagId}";
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
         }
     }
 }

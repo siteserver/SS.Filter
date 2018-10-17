@@ -23,20 +23,6 @@ namespace SS.Filter
             return ConfigInfoDict[siteId];
         }
 
-        public static FieldDao FieldDao { get; }
-        public static TagDao TagDao { get; }
-        public static ValueDao ValueDao { get; }
-
-        static Main()
-        {
-            var connectionString = Context.ConnectionString;
-            var databaseApi = Context.DatabaseApi;
-
-            FieldDao = new FieldDao(connectionString, databaseApi);
-            TagDao = new TagDao(connectionString, databaseApi);
-            ValueDao = new ValueDao(connectionString, databaseApi);
-        }
-
         public override void Startup(IService service)
         {
             PluginId = Id;

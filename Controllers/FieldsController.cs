@@ -4,6 +4,7 @@ using System.Linq;
 using SiteServer.Plugin;
 using SS.Filter.Core;
 using SS.Filter.Model;
+using SS.Filter.Provider;
 
 namespace SS.Filter.Controllers
 {
@@ -21,12 +22,12 @@ namespace SS.Filter.Controllers
             var channelId = request.GetQueryInt("channelId");
             var contentId = request.GetQueryInt("contentId");
 
-            var fieldInfoList = Main.FieldDao.GetFieldInfoList(siteId);
+            var fieldInfoList = FieldDao.GetFieldInfoList(siteId);
             foreach (var fieldInfo in fieldInfoList)
             {
-                fieldInfo.TagInfoList = Main.TagDao.GetTagInfoList(fieldInfo.Id, 0);
+                fieldInfo.TagInfoList = TagDao.GetTagInfoList(fieldInfo.Id, 0);
                 fieldInfo.Tags = fieldInfo.TagInfoList.Select(x => x.Title).ToList();
-                fieldInfo.CheckedTagIds = Main.ValueDao.GetTagIdList(siteId, channelId, contentId, fieldInfo.Id);
+                fieldInfo.CheckedTagIds = ValueDao.GetTagIdList(siteId, channelId, contentId, fieldInfo.Id);
             }
 
             return fieldInfoList;
@@ -47,7 +48,7 @@ namespace SS.Filter.Controllers
 
             var fieldInfo = request.GetPostObject<FieldInfo>();
 
-            Main.FieldDao.Insert(siteId, fieldInfo);
+            FieldDao.Insert(siteId, fieldInfo);
 
             var fieldId = fieldInfo.Id;
             var parentId = 0;
@@ -60,7 +61,7 @@ namespace SS.Filter.Controllers
             var taxis = 1;
             foreach (var tag in fieldInfo.Tags)
             {
-                Main.TagDao.Insert(fieldId, parentId, new TagInfo
+                TagDao.Insert(fieldId, parentId, new TagInfo
                 {
                     Id = 0,
                     FieldId = fieldId,
@@ -90,12 +91,12 @@ namespace SS.Filter.Controllers
 
             var fieldInfo = request.GetPostObject<FieldInfo>();
 
-            Main.FieldDao.Update(siteId, fieldInfo);
+            FieldDao.Update(siteId, fieldInfo);
 
             var fieldId = fieldInfo.Id;
             var parentId = 0;
 
-            var tagInfoList = Main.TagDao.GetTagInfoList(fieldId, parentId);
+            var tagInfoList = TagDao.GetTagInfoList(fieldId, parentId);
             if (fieldInfo.Tags == null)
             {
                 fieldInfo.Tags = new List<string>();
@@ -112,7 +113,7 @@ namespace SS.Filter.Controllers
 
             if (tagInfoListToDelete.Count > 0)
             {
-                Main.TagDao.Delete(fieldId, parentId, tagInfoListToDelete);
+                TagDao.Delete(fieldId, parentId, tagInfoListToDelete);
             }
 
             var taxis = 1;
@@ -121,7 +122,7 @@ namespace SS.Filter.Controllers
                 var tagInfo = tagInfoList.Find(t => t.Title == tag);
                 if (tagInfo == null)
                 {
-                    Main.TagDao.Insert(fieldId, parentId, new TagInfo
+                    TagDao.Insert(fieldId, parentId, new TagInfo
                     {
                         Id = 0,
                         FieldId = fieldId,
@@ -133,7 +134,7 @@ namespace SS.Filter.Controllers
                 else
                 {
                     tagInfo.Taxis = taxis;
-                    Main.TagDao.Update(fieldId, parentId, tagInfo);
+                    TagDao.Update(fieldId, parentId, tagInfo);
                 }
 
                 taxis++;
@@ -155,7 +156,7 @@ namespace SS.Filter.Controllers
                 throw new Exception("未授权请求");
             }
 
-            return Main.FieldDao.Delete(siteId, Utils.ToInt(fieldId));
+            return FieldDao.Delete(siteId, Utils.ToInt(fieldId));
         }
     }
 }

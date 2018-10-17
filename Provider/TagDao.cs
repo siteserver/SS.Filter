@@ -8,7 +8,7 @@ using SS.Filter.Model;
 
 namespace SS.Filter.Provider
 {
-    public class TagDao
+    public static class TagDao
     {
         public const string TableName = "ss_filter_tag";
 
@@ -42,60 +42,52 @@ namespace SS.Filter.Provider
             }
         };
 
-        private readonly string _connectionString;
-        private readonly IDatabaseApi _helper;
-        private readonly ObjectCache _cache = MemoryCache.Default;
-        private readonly CacheItemPolicy _policy = new CacheItemPolicy();
+        private static readonly ObjectCache Cache = MemoryCache.Default;
+        private static readonly CacheItemPolicy Policy = new CacheItemPolicy();
         private const string CacheNameTagInfoList = nameof(CacheNameTagInfoList);
 
-        public TagDao(string connectionString, IDatabaseApi helper)
+        private static List<TagInfo> CacheGetTagInfoList(int fieldId, int parentId)
         {
-            _connectionString = connectionString;
-            _helper = helper;
+            return Cache[$"{CacheNameTagInfoList}.{fieldId}.{parentId}"] as List<TagInfo>;
         }
 
-        private List<TagInfo> CacheGetTagInfoList(int fieldId, int parentId)
+        private static void CacheSetTagInfoList(int fieldId, int parentId, List<TagInfo> list)
         {
-            return _cache[$"{CacheNameTagInfoList}.{fieldId}.{parentId}"] as List<TagInfo>;
+            Cache.Set($"{CacheNameTagInfoList}.{fieldId}.{parentId}", list, Policy);
         }
 
-        private void CacheSetTagInfoList(int fieldId, int parentId, List<TagInfo> list)
+        private static void CacheRemoveTagInfoList(int fieldId, int parentId)
         {
-            _cache.Set($"{CacheNameTagInfoList}.{fieldId}.{parentId}", list, _policy);
+            Cache.Remove($"{CacheNameTagInfoList}.{fieldId}.{parentId}");
         }
 
-        private void CacheRemoveTagInfoList(int fieldId, int parentId)
-        {
-            _cache.Remove($"{CacheNameTagInfoList}.{fieldId}.{parentId}");
-        }
-
-        public void Insert(int fieldId, int parentId, TagInfo tagInfo)
+        public static void Insert(int fieldId, int parentId, TagInfo tagInfo)
         {
             if (tagInfo == null) return;
             tagInfo.FieldId = fieldId;
             tagInfo.ParentId = parentId;
             CacheRemoveTagInfoList(fieldId, parentId);
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 tagInfo.Id = (int)connection.Insert(tagInfo);
             }
         }
 
-        public void Update(int fieldId, int parentId, TagInfo tagInfo)
+        public static void Update(int fieldId, int parentId, TagInfo tagInfo)
         {
             if (tagInfo == null) return;
             tagInfo.FieldId = fieldId;
             tagInfo.ParentId = parentId;
             CacheRemoveTagInfoList(fieldId, parentId);
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 connection.Update(tagInfo);
             }
         }
 
-        public void Delete(int fieldId, int parentId, List<TagInfo> tagInfoList)
+        public static void Delete(int fieldId, int parentId, List<TagInfo> tagInfoList)
         {
             CacheRemoveTagInfoList(fieldId, parentId);
 
@@ -103,22 +95,22 @@ namespace SS.Filter.Provider
 
             var sqlString = $"DELETE FROM {TableName} WHERE {nameof(TagInfo.ParentId)} IN ({string.Join(",", idList)})";
 
-            _helper.ExecuteNonQuery(_connectionString, sqlString);
+            Context.DatabaseApi.ExecuteNonQuery(Context.ConnectionString, sqlString);
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 connection.Delete(tagInfoList);
             }
         }
 
-        public List<TagInfo> GetTagInfoList(int fieldId, int parentId)
+        public static List<TagInfo> GetTagInfoList(int fieldId, int parentId)
         {
             List<TagInfo> list = CacheGetTagInfoList(fieldId, parentId);
             if (list != null) return list;
 
             var sqlString = $"SELECT * FROM {TableName} WHERE {nameof(TagInfo.FieldId)} = @{nameof(TagInfo.FieldId)} AND {nameof(TagInfo.ParentId)} = @{nameof(TagInfo.ParentId)} ORDER BY {nameof(TagInfo.Taxis)}, {nameof(TagInfo.Id)}";
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 list = connection.Query<TagInfo>(sqlString, new TagInfo
                 {
@@ -132,11 +124,11 @@ namespace SS.Filter.Provider
             return list;
         }
 
-        public TagInfo GetTagInfo(int tagId)
+        public static TagInfo GetTagInfo(int tagId)
         {
             var sqlString = $"SELECT * FROM {TableName} WHERE {nameof(TagInfo.Id)} = @{nameof(TagInfo.Id)}";
 
-            using (var connection = _helper.GetConnection(_connectionString))
+            using (var connection = Context.DatabaseApi.GetConnection(Context.ConnectionString))
             {
                 return connection.QuerySingleOrDefault<TagInfo>(sqlString, new TagInfo
                 {

@@ -4,6 +4,7 @@ using System.Linq;
 using SiteServer.Plugin;
 using SS.Filter.Core;
 using SS.Filter.Model;
+using SS.Filter.Provider;
 
 namespace SS.Filter.Controllers
 {
@@ -34,7 +35,7 @@ namespace SS.Filter.Controllers
 
             var fieldInfoList = request.GetPostObject<List<FieldInfo>>();
 
-            var tupleList = Main.ValueDao.GetChannelIdContentIdTupleList(siteId, channelId, fieldInfoList);
+            var tupleList = ValueDao.GetChannelIdContentIdTupleList(siteId, channelId, fieldInfoList);
 
             var list = new List<ChannelContent>();
 
@@ -115,20 +116,20 @@ namespace SS.Filter.Controllers
             {
                 if (isAdd)
                 {
-                    Main.ValueDao.Insert(siteId, channelId, contentId, fieldId, tagId);
+                    ValueDao.Insert(siteId, channelId, contentId, fieldId, tagId);
                 }
                 else
                 {
-                    Main.ValueDao.Delete(siteId, channelId, contentId, fieldId, tagId);
+                    ValueDao.Delete(siteId, channelId, contentId, fieldId, tagId);
                 }
             }
             else
             {
-                Main.ValueDao.DeleteAll(siteId, channelId, contentId, fieldId);
+                ValueDao.DeleteAll(siteId, channelId, contentId, fieldId);
 
                 if (isAdd)
                 {
-                    Main.ValueDao.Insert(siteId, channelId, contentId, fieldId, tagId);
+                    ValueDao.Insert(siteId, channelId, contentId, fieldId, tagId);
                 }
             }
 
