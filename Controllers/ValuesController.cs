@@ -42,12 +42,12 @@ namespace SS.Filter.Controllers
             {
                 var pageTupleList = tupleList.Skip(skip).Take(top).ToList();
 
-                var siteUrl = PluginContext.SiteApi.GetSiteUrl(siteId);
+                var siteUrl = Context.SiteApi.GetSiteUrl(siteId);
 
                 foreach (var tuple in pageTupleList)
                 {
-                    var channelInfo = PluginContext.ChannelApi.GetChannelInfo(siteId, tuple.Item1);
-                    var contentInfo = PluginContext.ContentApi.GetContentInfo(siteId, tuple.Item1, tuple.Item2);
+                    var channelInfo = Context.ChannelApi.GetChannelInfo(siteId, tuple.Item1);
+                    var contentInfo = Context.ContentApi.GetContentInfo(siteId, tuple.Item1, tuple.Item2);
 
                     if (channelInfo == null || contentInfo == null) continue;
 
@@ -62,8 +62,8 @@ namespace SS.Filter.Controllers
                         }
                     }
 
-                    var channelUrl = PluginContext.ChannelApi.GetChannelUrl(siteId, tuple.Item1);
-                    var contentUrl = PluginContext.ContentApi.GetContentUrl(siteId, tuple.Item1, tuple.Item2);
+                    var channelUrl = Context.ChannelApi.GetChannelUrl(siteId, tuple.Item1);
+                    var contentUrl = Context.ContentApi.GetContentUrl(siteId, tuple.Item1, tuple.Item2);
 
                     list.Add(new ChannelContent
                     {

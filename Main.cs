@@ -18,7 +18,7 @@ namespace SS.Filter
         {
             if (!ConfigInfoDict.ContainsKey(siteId))
             {
-                ConfigInfoDict[siteId] = PluginContext.ConfigApi.GetConfig<ConfigInfo>(PluginId, siteId) ?? new ConfigInfo();
+                ConfigInfoDict[siteId] = Context.ConfigApi.GetConfig<ConfigInfo>(PluginId, siteId) ?? new ConfigInfo();
             }
             return ConfigInfoDict[siteId];
         }
@@ -29,8 +29,8 @@ namespace SS.Filter
 
         static Main()
         {
-            var connectionString = PluginContext.ConnectionString;
-            var databaseApi = PluginContext.DatabaseApi;
+            var connectionString = Context.ConnectionString;
+            var databaseApi = Context.DatabaseApi;
 
             FieldDao = new FieldDao(connectionString, databaseApi);
             TagDao = new TagDao(connectionString, databaseApi);
