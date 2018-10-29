@@ -11,7 +11,8 @@ namespace SS.Filter
 {
     public class Main : PluginBase
     {
-        private static string PluginId { get; set; }
+        private const string PluginId = "SS.Filter";
+
         private static readonly Dictionary<int, ConfigInfo> ConfigInfoDict = new Dictionary<int, ConfigInfo>();
 
         public static ConfigInfo GetConfigInfo(int siteId)
@@ -25,8 +26,6 @@ namespace SS.Filter
 
         public override void Startup(IService service)
         {
-            PluginId = Id;
-
             service
                 .AddSiteMenu(siteId => new Menu
                 {
@@ -54,7 +53,7 @@ namespace SS.Filter
                 .AddDatabaseTable(FieldDao.TableName, FieldDao.Columns)
                 .AddDatabaseTable(TagDao.TableName, TagDao.Columns)
                 .AddDatabaseTable(ValueDao.TableName, ValueDao.Columns)
-                .AddContentMenu(new Menu
+                .AddContentMenu(contentInfo => new Menu
                 {
                     Text = "设置筛选项",
                     Href = "pages/pageCheck.html"
