@@ -17,7 +17,9 @@ namespace SS.Filter.Provider
             new TableColumn
             {
                 AttributeName = nameof(FieldInfo.Id),
-                DataType = DataType.Integer
+                DataType = DataType.Integer,
+                IsPrimaryKey = true,
+                IsIdentity = true
             },
             new TableColumn
             {
