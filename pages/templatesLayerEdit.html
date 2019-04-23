@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <title>SiteServer CMS</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="../assets/css/font-awesome-4.7.0.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="../assets/css/bootstrap-4.1.0.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="../assets/css/siteserver-1.0.7.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+  </head>
+
+<body>
+  <div id="main" class="m-t-15 m-b-15 m-l-15 m-r-15">
+    <template v-if="pageLoad">
+      <div v-if="pageAlert" class="alert" v-bind:class="{ 'alert-warning': pageAlert.type === 'warning', 'alert-success': pageAlert.type === 'success', 'alert-danger': pageAlert.type === 'danger' }">
+        <button v-on:click="pageAlert = null" class="close" data-dismiss="alert">×</button>
+        <span v-html="pageAlert.html"></span>
+      </div>
+      <div class="form-group">
+        <label> 模板文件夹 <small v-show="errors.has('name')" class="text-danger"> {{ errors.first('name') }} </small>
+        </label>
+        <input v-model="templateInfo.name" name="name" data-vv-as="模板文件夹" v-validate="'required'" :class="{'is-invalid': errors.has('name') }"
+          type="text" class="form-control">
+        <small>填写需要保存的模板文件夹名称，模板文件将存储于此文件夹中。</small>
+      </div>
+      <div class="form-group">
+        <label> 模板说明 </label>
+        <textarea v-model="templateInfo.description" class="form-control"></textarea>
+      </div>
+      <hr />
+      <div class="text-right mr-1">
+        <button type="button" class="btn btn-primary m-l-5" v-on:click="btnSubmitClick">确 定</button>
+        <button type="button" class="btn btn-default m-l-5" onclick="window.parent.layer.closeAll()">取 消</button>
+      </div>
+    </template>
+    <template v-else>
+      <div class="text-center" style="margin-top: 100px">
+        <img class="mt-3" src="../assets/images/loading.gif" />
+        <p class="lead mt-3 text-nowrap">载入中，请稍后...</p>
+      </div>
+    </template>
+  </div>
+</body>
+
+</html>
+
+<script src="../assets/lib/es6-promise.auto.min.js"></script>
+<script src="../assets/lib/axios-0.18.0.min.js"></script>
+<script src="../assets/lib/jquery-1.9.1.min.js"></script>
+<script src="../assets/lib/layer/layer-3.1.1.js"></script>
+<script src="../assets/lib/vue-2.6.10.min.js"></script>
+
+<script src="../assets/lib/vee-validate/vee-validate-2.2.2.js"></script>
+<script src="../assets/lib/vee-validate/locale/zh_CN-2.2.2.js"></script>
+<script src="../assets/js/validate.js"></script>
+
+<script src="../assets/lib/sweetalert2-7.28.4.all.min.js"></script>
+<script src="../assets/js/swal2.js"></script>
+
+<script src="../assets/js/utils.js"></script>
+<script src="templatesLayerEdit.js"></script>

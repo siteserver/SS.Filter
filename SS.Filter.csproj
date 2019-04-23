@@ -1,146 +1,36 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{00807126-ADE8-4FA8-B25A-B9DA9F9D6CA3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SS.Filter</RootNamespace>
-    <AssemblyName>SS.Filter</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>net452</TargetFrameworks>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageId>SS.Filter</PackageId>
+    <Version>1.0.0</Version>
+    <Title>内容筛选插件</Title>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>SiteServer CMS</Authors>
+    <Company>SiteServer CMS</Company>
+    <Product></Product>
+    <Description>SiteServer CMS 内容筛选插件</Description>
+    <PackageLicense>GPL-3.0</PackageLicense>
+    <PackageProjectUrl>https://github.com/siteserver/SS.Filter</PackageProjectUrl>
+    <PackageIconUrl>https://www.siteserver.cn/docs/SS.Filter/logo.svg</PackageIconUrl>
+    <Copyright>Copyright © SiteServer CMS</Copyright>
+    <PackageTags>SiteServer CMS Filter Plugin</PackageTags>
+    <RepositoryUrl>https://github.com/siteserver/SS.Filter</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageReleaseNotes></PackageReleaseNotes>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  
   <ItemGroup>
-    <Reference Include="Dapper, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Dapper.1.50.5\lib\net451\Dapper.dll</HintPath>
-    </Reference>
-    <Reference Include="Dapper.Contrib, Version=1.50.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Dapper.Contrib.1.50.5\lib\net451\Dapper.Contrib.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="SiteServer.Plugin, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\SiteServer.Plugin.2.1.0\lib\net45\SiteServer.Plugin.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
+    <PackageReference Include="SiteServer.Plugin" Version="2.3.6" />
+    <PackageReference Include="System.Runtime.Caching" Version="4.5.0" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="Controllers\TagsController.cs" />
-    <Compile Include="Controllers\FieldsController.cs" />
-    <Compile Include="Core\AlertUtils.cs" />
-    <Compile Include="Controls\DateTimeTextBox.cs" />
-    <Compile Include="Core\LayerUtils.cs" />
-    <Compile Include="Core\Utils.cs" />
-    <Compile Include="Model\TagInfo.cs" />
-    <Compile Include="Model\ValueInfo.cs" />
-    <Compile Include="Model\FieldInfo.cs" />
-    <Compile Include="Model\ConfigInfo.cs" />
-    <Compile Include="Main.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Provider\ValueDao.cs" />
-    <Compile Include="Provider\TagDao.cs" />
-    <Compile Include="Provider\FieldDao.cs" />
+    <Content Include="assets\**" />
+    <Content Include="pages\**" />
+    <Content Include="templates\**" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="assets\fonts\fontawesome-webfont.eot" />
-    <None Include="assets\fonts\fontawesome-webfont.ttf" />
-    <None Include="assets\fonts\fontawesome-webfont.woff" />
-    <None Include="assets\fonts\fontawesome-webfont.woff2" />
-    <None Include="assets\fonts\FontAwesome.otf" />
-    <None Include="assets\fonts\ionicons.eot" />
-    <None Include="assets\fonts\ionicons.ttf" />
-    <None Include="assets\fonts\ionicons.woff" />
-    <None Include="docs\background.md" />
-    <None Include="docs\captcha.md" />
-    <None Include="docs\foreground.md" />
-    <None Include="docs\README.md" />
-    <None Include="docs\why-isnt-working.md" />
-    <None Include="docs\_sidebar.md" />
-    <None Include="NuGet.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SS.Filter.nuspec" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="assets\css\bootstrap-4.1.0.min.css" />
-    <Content Include="assets\css\icons-1.0.6.min.css" />
-    <Content Include="assets\css\siteserver-1.0.6.min.css" />
-    <Content Include="assets\fonts\fontawesome-webfont.svg" />
-    <Content Include="assets\fonts\ionicons.svg" />
-    <Content Include="assets\images\loading.gif" />
-    <Content Include="assets\js\axios-0.17.1.min.js" />
-    <Content Include="assets\js\jquery-1.9.1.min.js" />
-    <Content Include="assets\js\layer-3.1.1\layer.js" />
-    <Content Include="assets\js\layer-3.1.1\mobile\layer.js" />
-    <Content Include="assets\js\layer-3.1.1\mobile\need\layer.css" />
-    <Content Include="assets\js\layer-3.1.1\theme\default\icon-ext.png" />
-    <Content Include="assets\js\layer-3.1.1\theme\default\icon.png" />
-    <Content Include="assets\js\layer-3.1.1\theme\default\layer.css" />
-    <Content Include="assets\js\layer-3.1.1\theme\default\loading-0.gif" />
-    <Content Include="assets\js\layer-3.1.1\theme\default\loading-1.gif" />
-    <Content Include="assets\js\layer-3.1.1\theme\default\loading-2.gif" />
-    <Content Include="assets\js\sweetalert-2.1.0.min.js" />
-    <Content Include="assets\js\vue-2.5.16.min.js" />
-    <Content Include="assets\js\vue-input-tag-1.0.4.min.js" />
-    <Content Include="docs\assets\background\01.png" />
-    <Content Include="docs\assets\background\02.png" />
-    <Content Include="docs\assets\background\03.png" />
-    <Content Include="docs\assets\favicon.ico" />
-    <Content Include="docs\assets\foreground\01.png" />
-    <Content Include="docs\assets\readme\00.png" />
-    <Content Include="docs\assets\readme\01.png" />
-    <Content Include="docs\assets\readme\02.png" />
-    <Content Include="docs\assets\readme\03.png" />
-    <Content Include="docs\index.html" />
-    <Content Include="docs\logo.svg" />
-    <Content Include="pageSettings.aspx" />
-    <Content Include="pages\apiUtils.js" />
-    <Content Include="pages\pageCheck.html" />
-    <Content Include="pages\pageCheck.js" />
-    <Content Include="pages\pageFields.html" />
-    <Content Include="pages\pageFields.js" />
-    <Content Include="pages\pageSearch.html" />
-    <Content Include="pages\pageSearch.js" />
-    <Content Include="pages\pageStyle.html" />
-    <Content Include="pages\pageUtils.js" />
-    <Content Include="pages\settings.html" />
-    <Content Include="pages\settings.js" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
+
 </Project>
